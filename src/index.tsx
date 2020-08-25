@@ -1,13 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import App from './components/app/App';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as serviceWorker from './serviceWorker';
+import {createStore, applyMiddleware} from "redux";
+import {composeWithDevTools} from "redux-devtools-extension";
+import {Provider} from "react-redux";
+import thunk from "redux-thunk";
+import {reducer, Operation, ActionCreator} from "./reduser/reducer";
+import {createAPI} from "./api";
+import App from './components/app/App';
+
+
+const api = createAPI();
+
+const store = createStore(
+  reducer,
+  composeWithDevTools(
+    applyMiddleware(thunk.withExtraArgument(api))
+  )
+);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 

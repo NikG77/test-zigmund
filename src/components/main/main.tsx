@@ -1,12 +1,20 @@
 import * as React from 'react';
 import {useState} from "react";
+import {connect} from "react-redux";
+import {Operation} from "../../reduser/reducer";
 
+interface Props {
+  onNameSelection: (value: string) => void;
+}
 
-const Main = () => {
+const Main: React.FunctionComponent<Props> = (props: Props) => {
   const [value, setValue] = useState(``);
+
+
   const onSubmitForm = (evt) => {
     evt.preventDefault();
     console.log(value);
+    onNameSelection(value);
   }
 
 
@@ -17,20 +25,18 @@ const Main = () => {
               className="organization__form"
               onSubmit={onSubmitForm}
         >
-
-          <label className="organization__label" htmlFor="organization" >Organization</label>
-          <input className="organization__input"
-                onChange={(evt) => setValue(evt.target.value)}
-                value={value}
-                name="organization"
-                id="organization"
-                placeholder="Name organization"
-                required
-          />
-
-          <button className="btn organization__btn"
-                  type="submit"
-          >Post</button>
+          <div className="organization__text">
+            <label className="organization__label" htmlFor="organization" >Organization</label>
+            <input className="organization__input"
+                  onChange={(evt) => setValue(evt.target.value)}
+                  value={value}
+                  name="organization"
+                  id="organization"
+                  placeholder="Name organization"
+                  required
+            />
+            <button className="btn organization__btn" type="submit" >Post</button>
+          </div>
 
         </form>
       </div>
@@ -39,4 +45,18 @@ const Main = () => {
   );
 }
 
-export default Main;
+
+
+const mapDispatchToProps = (dispatch) => ({
+  onNameSelection(name) {
+    dispatch(Operation.getRepos(name));
+  },
+
+});
+
+
+export {Main};
+export default connect(null, mapDispatchToProps)(Main);
+
+
+
