@@ -5,7 +5,7 @@ import {createStore, applyMiddleware} from "redux";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
-import {reducer, Operation, ActionCreator} from "./reduser/reducer";
+import {reducer} from "./reduser/reducer";
 import {createAPI} from "./api";
 import App from './components/app/App';
 
@@ -20,11 +20,11 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
+   <React.StrictMode>
+    <Provider store={store}>
       <App />
-    </React.StrictMode>
-  </Provider>,
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

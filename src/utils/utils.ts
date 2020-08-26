@@ -1,6 +1,5 @@
 import Swal from "sweetalert2";
 
-
 export const extend = (a, b) => {
   return Object.assign({}, a, b);
 };

@@ -1,22 +1,21 @@
 import * as React from 'react';
 import {useState} from "react";
 import {connect} from "react-redux";
-import {Operation} from "../../reduser/reducer";
+import {ActionCreator, Operation} from "../../reduser/reducer";
 
 interface Props {
   onNameSelection: (value: string) => void;
 }
 
-const Main: React.FunctionComponent<Props> = (props: Props) => {
+const Main: React.FC<Props> = (props: Props) => {
   const [value, setValue] = useState(``);
 
-
   const onSubmitForm = (evt) => {
+    const {onNameSelection} = props;
     evt.preventDefault();
-    console.log(value);
     onNameSelection(value);
+    // setValue(``);
   }
-
 
   return (
     <React.Fragment >
@@ -49,7 +48,8 @@ const Main: React.FunctionComponent<Props> = (props: Props) => {
 
 const mapDispatchToProps = (dispatch) => ({
   onNameSelection(name) {
-    dispatch(Operation.getRepos(name));
+    dispatch(Operation.getRepositories(name));
+    dispatch(ActionCreator.setName(name));
   },
 
 });

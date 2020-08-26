@@ -1,7 +1,6 @@
-// import {adaptFilms} from "../../adapters/adapters";
-import {errorPopup, extend} from "../utils/utils";
-
-import {AuthorizationStatus} from "../const";
+import { errorPopup, extend } from "../utils/utils";
+import { AuthorizationStatus } from "../const";
+import { adaptRepositories } from "../adapter/adapter";
 
 
 const initialState = {
@@ -14,9 +13,9 @@ const initialState = {
 
 const ActionType = {
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  LOAD_REPOS:  `LOAD_REPOS`,
+  LOAD_REPOSITORIES:  `LOAD_REPOSITORIES`,
   SET_NAME: `SET_NAME`,
-  SET_REPOS_LOADING: `SET_REPOS_LOADING`,
+  SET_REPOSITORIES_LOADING: `SET_REPOSITORIES_LOADING`,
 };
 
 const ActionCreator = {
@@ -25,8 +24,8 @@ const ActionCreator = {
     payload: status,
   }),
 
-  loadRepos: (repos) => ({
-    type: ActionType.LOAD_REPOS,
+  loadRepositories: (repos) => ({
+    type: ActionType.LOAD_REPOSITORIES,
     payload: repos,
   }),
 
@@ -35,8 +34,8 @@ const ActionCreator = {
     payload: name,
   }),
 
-  setReposLoading: (isReposLoading) => ({
-    type: ActionType.SET_REPOS_LOADING,
+  setRepositoriesLoading: (isReposLoading) => ({
+    type: ActionType.SET_REPOSITORIES_LOADING,
     payload: isReposLoading,
   }),
 
@@ -44,18 +43,20 @@ const ActionCreator = {
 
 
 const Operation = {
-  getRepos: (name) => (dispatch, getState, api) => {
-    dispatch(ActionCreator.setReposLoading(true));
+  getRepositories: (name) => (dispatch, getState, api) => {
+    dispatch(ActionCreator.setRepositoriesLoading(true));
     return api.get(`/${name}/repos`)
       .then(({data}) => {
-        console.log(`Получили ${data}`);
-        // const repos = adaptFilms(data);
-        const repos = data;
-        dispatch(ActionCreator.loadRepos(repos));
-        dispatch(ActionCreator.setReposLoading(false));
+        const repositories = adaptRepositories(data);
+        console.log(repositories);
+        dispatch(ActionCreator.loadRepositories(repositories));
+        dispatch(ActionCreator.setRepositoriesLoading(false));
+        dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
       })
       .catch((err) => {
-        dispatch(ActionCreator.setReposLoading(false));
+        dispatch(ActionCreator.setRepositoriesLoading(false));
+        dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
+        dispatch(ActionCreator.loadRepositories([]));
         return errorPopup(err);
       });
   },
@@ -64,8 +65,8 @@ const Operation = {
 
 
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ActionType.LOAD_REPOS:
+    switch (action.type) {
+    case ActionType.LOAD_REPOSITORIES:
       return extend(state, {
         listRepos: action.payload,
       });
@@ -78,13 +79,15 @@ const reducer = (state = initialState, action) => {
         authorizationStatus: action.payload,
       });
 
-    case ActionType.SET_REPOS_LOADING:
+    case ActionType.SET_REPOSITORIES_LOADING:
       return extend(state, {
         isReposLoading: action.payload,
       });
+
+    default:
+      return state;
   }
 
-  return state;
 };
 
 
