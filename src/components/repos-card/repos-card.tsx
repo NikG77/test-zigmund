@@ -22,10 +22,10 @@ const ReposCard: React.FC<Props> = ({repository}: Props) => {
   return (
       <section>
         <div>
-          <h4>Name repository: {name}</h4>
+          Name repository: {name}
         </div>
         <div>
-          <h4>Url: {url}</h4>
+          <a href={url} target="_blank" >{url}</a>
         </div>
         <div>
           {statisticInfo}

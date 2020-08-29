@@ -6,3 +6,5 @@ export const AuthorizationStatus = {
 export const Error = {
   NOT_FOUND: 404,
 };
+
+export const COUNT_REPOSITORIES_SHOW = 20;

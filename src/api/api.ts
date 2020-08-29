@@ -1,11 +1,11 @@
 import axios from "axios";
-import {Error} from "./const";
+import { Error } from "../const";
+import { errorPopup } from "../utils/utils";
 
 
 export const createAPI = () => {
   const api = axios.create({
     baseURL: `https://api.github.com/orgs`,
-    timeout: 1000 * 5,
   });
 
   const onSuccess = (response) => {
@@ -14,7 +14,8 @@ export const createAPI = () => {
 
   const onFail = (err) => {
     if (err.response.status === Error.NOT_FOUND) {
-      err.response.data.error = `Данной организации нет в репозитории`;
+      err.response.data.error = `У данной организации нет репозитория`;
+      errorPopup(err);
     }
     throw err;
   };

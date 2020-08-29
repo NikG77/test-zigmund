@@ -1,27 +1,17 @@
-import * as React from 'react';
-import {connect} from "react-redux";
+import React from 'react';
 import Main from "../main/main";
-import Loader from "../loader/loader";
 import ReposList from "../repos-list/repos-list";
 
-interface Props {
-  isReposLoading: boolean,
-}
 
-function App({isReposLoading}: Props): JSX.Element {
-
-  return (isReposLoading ? <Loader /> :
-    <div>
-      <h1>Тестовое задание</h1>
+function App(): JSX.Element {
+  return (
+    <div className="main">
+      <h1 className="main__title">Тестовое задание</h1>
       <Main />
       <ReposList />
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  isReposLoading: state.isReposLoading,
-});
+export default App;
 
-export {App};
-export default connect(mapStateToProps)(App);

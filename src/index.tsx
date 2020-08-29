@@ -1,23 +1,22 @@
 import * as React from "react";
+import { createStore, applyMiddleware } from "redux";
 import * as ReactDOM from "react-dom";
 import * as serviceWorker from './serviceWorker';
-import {createStore, applyMiddleware} from "redux";
-import {composeWithDevTools} from "redux-devtools-extension";
-import {Provider} from "react-redux";
-import thunk from "redux-thunk";
-import {reducer} from "./reduser/reducer";
-import {createAPI} from "./api";
-import App from './components/app/App';
+import createSagaMiddleware from 'redux-saga'
+import { composeWithDevTools } from "redux-devtools-extension";
+import { Provider } from "react-redux";
+import { reducer } from "./reduser/reducer";
+import App from "./components/app/App";
+import mySaga from "./sagas/mySaga";
 
 
-const api = createAPI();
-
+const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   reducer,
-  composeWithDevTools(
-    applyMiddleware(thunk.withExtraArgument(api))
-  )
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+sagaMiddleware.run(mySaga);
 
 ReactDOM.render(
    <React.StrictMode>

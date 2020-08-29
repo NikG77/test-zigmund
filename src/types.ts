@@ -1,3 +1,5 @@
+import {ActionType} from "./reduser/reducer";
+
 export interface Repository {
   name: string;
   url: string;
@@ -118,3 +120,27 @@ export interface RepositoryResponse {
     node_id: string;
   };
 }
+
+export interface LoadRepositoriesAction {
+  type: typeof ActionType.LOAD_REPOSITORIES;
+  payload: {
+    listRepos: Repository[]
+  };
+}
+
+export interface SetNameAction {
+  type: typeof ActionType.SET_NAME;
+  payload: {
+    name: string;
+  };
+}
+
+export interface SetRepositoriesLoadingAction {
+  type: typeof ActionType.SET_REPOSITORIES_LOADING;
+  payload: {
+    isReposLoading: boolean;
+  };
+}
+
+export type RepositoriesActionTypes =
+   LoadRepositoriesAction | SetNameAction | SetRepositoriesLoadingAction;
