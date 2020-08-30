@@ -25,44 +25,46 @@ const ReposList: React.FC<Props> = ({nameOrganization, listRepos, isReposLoading
     <React.Fragment>
       {listRepos.length > 0 && (
         <React.Fragment>
-          <div>
-            <h2>Вы смотрите репозитории по организации {nameOrganization}</h2>
+          <div className="repository">
+            <div className="repository__title">
+              <h2>Вы нашли репозитории по организации {nameOrganization}:</h2>
+            </div>
+            <div className="repository__list">
+              {listRepos.map((repository: Repository) =>
+                  <ReposCard key={repository.name} repository={repository} />
+              )}
+            </div>
           </div>
 
-          {listRepos.map((repository: Repository) =>
-              <ReposCard key={repository.name} repository={repository} />
-          )}
-
-      <div
-        className=" ">
-                    <span className=" ">
-                      page {page} from {pageCount}
-                        </span>
-        <div className=" ">
-          <button
-            onClick={(() => {
-              onPageChange(nameOrganization, page - 1);
-              setPage(page - 1);
-            })}
-            type="button"
-            className="btn"
-            disabled={page === 1}
-          >
-            Prev
-          </button>
-          <button
-            onClick={(() => {
-              onPageChange(nameOrganization, page + 1);
-              setPage( page + 1)
-            })}
-            type="button"
-            className="btn"
-            disabled={page === pageCount}
-          >
-            Next
-          </button>
-        </div>
-      </div>
+          <div className="pagination">
+            <div className="pagination__page">
+              <span>page {page} from {pageCount}</span>
+            </div>
+            <div className="pagination__btn">
+              <button
+                onClick={(() => {
+                  onPageChange(nameOrganization, page - 1);
+                  setPage(page - 1);
+                })}
+                type="button"
+                className="btn"
+                disabled={page === 1}
+              >
+                Prev
+              </button>
+              <button
+                onClick={(() => {
+                  onPageChange(nameOrganization, page + 1);
+                  setPage( page + 1)
+                })}
+                type="button"
+                className="btn"
+                disabled={page === pageCount}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </React.Fragment>
       )}
 

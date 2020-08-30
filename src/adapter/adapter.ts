@@ -3,19 +3,21 @@ import { Repository, RepositoryResponse } from "../types";
 const adaptRepository = (repository: RepositoryResponse): Repository => {
   const {
     name,
+    description,
     html_url: url,
-    forks_count: forks,
-    stargazers_count: stargazers,
-    watchers_count: watchers,
+    forks_count: fork,
+    stargazers_count: star,
+    watchers_count: watch,
   } = repository;
 
   return {
     name,
     url,
+    description,
     statistics: {
-      forks,
-      stargazers,
-      watchers,
+      fork,
+      watch,
+      star,
     },
   };
 };

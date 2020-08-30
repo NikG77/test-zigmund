@@ -3,10 +3,11 @@ import {ActionType} from "./reduser/reducer";
 export interface Repository {
   name: string;
   url: string;
+  description: string;
   statistics: {
-    forks: number;
-    watchers: number;
-    stargazers: number;
+    fork: number;
+    watch: number;
+    star: number;
   };
 }
 
