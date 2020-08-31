@@ -1,0 +1,57 @@
+.card {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-width: 330px;
+  min-height: 120px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  padding: 10px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+
+  &:hover,
+  &:focus {
+    box-shadow: 0px 10px 25px 0 rgba(41, 52, 73, 0.5);
+    outline: none;
+  }
+}
+
+.card__name {
+  margin-bottom: 10px;
+}
+
+.card__name a {
+  outline: none;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline red;
+  }
+}
+
+.card__description {
+  margin-bottom: 10px;
+}
+
+.statistics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.statistics__item {
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding: 0 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 15px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

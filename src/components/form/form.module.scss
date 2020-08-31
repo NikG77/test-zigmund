@@ -1,0 +1,36 @@
+.organization__form {
+  position: relative;
+  width: 300px;
+  margin: 0 auto;
+  background: #A3D0C3;
+  border-bottom: 2px solid #be920e;
+}
+
+.organization__input {
+  width: 100%;
+  height: 42px;
+  background: #F9F0DA;
+  padding-left: 15px;
+
+  border: none;
+  outline: none;
+}
+
+.organization__btn {
+  height: 42px;
+  width: 42px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.organization__btn:before {
+  content: "";
+  color: #F9F0DA;
+}
+

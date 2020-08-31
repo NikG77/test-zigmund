@@ -1,6 +1,7 @@
 import React, { Dispatch, useState } from 'react';
 import { connect } from "react-redux";
 import { ActionCreator } from "../../reduser/reducer";
+import styles from "./form.module.scss"
 
 
 interface Props {
@@ -20,32 +21,28 @@ const Form: React.FC<Props> = (props: Props) => {
     setValue(evt.target.value);
 
   return (
-    <div className="organization">
-      <form action="#"
-            className="organization__form"
-            onSubmit={handleSubmitForm(props)}
-      >
-        <div className="organization__text">
-          <label className="visually-hidden" htmlFor="organization" >Organization</label>
-          <input className="organization__input"
-                 onChange={handleInputChange}
-                 value={value}
-                 name="organization"
-                 type="text"
-                 aria-label="Find repositories"
-                 id="organization"
-                 placeholder="Find repositories"
-                 required
-          />
-          <button className="organization__btn" type="submit" tabIndex={0} >
-            <svg viewBox="0 0 17 17" width={17} height={17}>
-              <use xlinkHref="#search"></use>
-            </svg>
-          </button>
-        </div>
-
-      </form>
-    </div>
+    <form action="#"
+          className={styles.organization__form}
+          onSubmit={handleSubmitForm(props)}
+    >
+      <div className={styles.organization__text}>
+        <input className={styles.organization__input}
+               onChange={handleInputChange}
+               value={value}
+               name="organization"
+               type="text"
+               aria-label="Find repositories"
+               id="organization"
+               placeholder="Find repositories"
+               required
+        />
+        <button className={styles.organization__btn} type="submit" tabIndex={0} >
+          <svg viewBox="0 0 17 17" width={17} height={17}>
+            <use xlinkHref="#search"></use>
+          </svg>
+        </button>
+      </div>
+    </form>
   );
 }
 

@@ -1,8 +1,9 @@
-import React, { Dispatch, useState, useEffect } from 'react';
+import React, { Dispatch } from 'react';
 import { connect } from "react-redux";
 import { Repository } from "../../types";
 import { ActionCreator } from "../../reduser/reducer";
 import { PageDirection, StatusLoading } from "../../const";
+import styles from "./repos-list.module.scss";
 
 import ReposCard from "../repos-card/repos-card";
 import Loader from "../loader/loader";
@@ -44,7 +45,7 @@ const ReposList: React.FC<ReposListProps> = ({ nameOrganization, repositories, s
     }
 
     return (
-      <button className="btn"
+      <button className={styles.btn}
               onClick={(() => {
                 onPageChange(nameOrganization, nextPage);
               })}
@@ -57,7 +58,7 @@ const ReposList: React.FC<ReposListProps> = ({ nameOrganization, repositories, s
   }
 
   const notRepeatAnswer = (
-    <div className="answer-error">
+    <div className={styles.answer__error}>
       <p>
         Sorry, we cannot re-contact GitHub for the next page. Try again later
       </p>
@@ -68,11 +69,11 @@ const ReposList: React.FC<ReposListProps> = ({ nameOrganization, repositories, s
     <React.Fragment>
       {repositories.length > 0 && (
         <React.Fragment>
-          <div className="repository">
-            <div className="repository__title">
+          <div className={styles.repository}>
+            <div className={styles.repository__title}>
               <h2>Вы нашли репозитории по организации {nameOrganization}:</h2>
             </div>
-            <div className="repository__list">
+            <div className={styles.repository__list}>
               {repositories.map((repository: Repository) =>
                   <ReposCard key={repository.name} repository={repository} />
               )}
@@ -80,11 +81,11 @@ const ReposList: React.FC<ReposListProps> = ({ nameOrganization, repositories, s
           </div>
           {pageCount > 0 && statusLoading === StatusLoading.ERROR && notRepeatAnswer}
 
-          <div className="pagination">
-            <div className="pagination__page">
+          <div className={styles.pagination}>
+            <div className={styles.pagination__page}>
               <span>page {currentPage} from {pageCount}</span>
             </div>
-            <div className="pagination__btn">
+            <div className={styles.pagination__btn}>
               <Button pageDirection={PageDirection.PREVIOUS}/>
               <Button pageDirection={PageDirection.NEXT}/>
             </div>

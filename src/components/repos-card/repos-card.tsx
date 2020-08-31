@@ -1,5 +1,7 @@
-import React from 'react';
+import React from "react";
 import {Repository} from "../../types";
+import styles from "./repos-card.module.scss"
+
 
 interface Props {
   repository: Repository,
@@ -13,10 +15,10 @@ const ReposCard: React.FC<Props> = ({repository}: Props) => {
     statistics
    } = repository;
 
-
   const statisticInfo = Object.entries(statistics).map(([name, count]) => {
     return (
-      <div className={`statistics__item statistics__item-${name}`} key={name}>
+      // <div className={`statistics__item statistics__item-${name}`} key=
+      <div className={styles.statistics__item} key={name}>
         <svg viewBox="0 0 17 17" width={17} height={17}>
           <use xlinkHref={`#${name}`}></use>
         </svg>
@@ -27,22 +29,21 @@ const ReposCard: React.FC<Props> = ({repository}: Props) => {
   });
 
   return (
-      <div className="card">
-        <div className="card__name">
-          <a className="card__name" href={url} target="_blank" >{name}</a>
+      <div className={styles.card}>
+        <div className={styles.card__name}>
+          <a href={url}>{name}</a>
         </div>
-        <div className="card__description">
+        <div className={styles.card__description}>
           <span>{description}</span>
         </div>
 
-        <div className="statistics">
+        <div className={styles.statistics}>
           {statisticInfo}
         </div>
 
       </div>
   );
 }
-
 
 
 export default ReposCard;
