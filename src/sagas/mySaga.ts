@@ -1,16 +1,11 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import { getRepositories } from "../api/repositories";
 import { ActionType } from "../reduser/reducer";
-import {adaptRepositories} from "../adapter/adapter";
+import { adaptRepositories } from "../adapter/adapter";
 
 
 function* _getRepositories(action) {
   try {
-    yield put({
-      type: ActionType.SET_REPOSITORIES_LOADING,
-      payload: true,
-    });
-
     const org = action.payload.name;
     const page = action.payload.page;
     const data = yield call(getRepositories, {org, page});
@@ -18,33 +13,22 @@ function* _getRepositories(action) {
     const repositories = adaptRepositories(data.repositories);
 
     yield put({
-      type: ActionType.LOAD_REPOSITORIES,
-      payload: repositories,
-    });
-
-    yield put({
-      type: ActionType.SET_PAGE_COUNT,
-      payload: pageCount,
-    });
-
-    yield put({
-      type: ActionType.SET_REPOSITORIES_LOADING,
-      payload: false ,
+      type: ActionType.DOWNLOAD_REPOSITORIES_SUCCESS,
+      payload: {
+        repositories,
+        pageCount,
+        page,
+      },
     });
   }
 
   catch (error) {
     yield put({
-      type: ActionType.SET_REPOSITORIES_LOADING,
-      payload: false,
-    });
-    yield put({
-      type: ActionType.LOAD_REPOSITORIES,
-      payload: [],
+      type: ActionType.DOWNLOAD_REPOSITORIES_ERROR,
     });
   }
 }
 
 export default function* mySaga() {
-  yield takeLatest(ActionType.SET_NAME, _getRepositories);
+  yield takeLatest(ActionType.GET_REPOSITORIES, _getRepositories);
 }

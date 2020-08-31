@@ -1,5 +1,6 @@
 import {ActionType} from "./reduser/reducer";
 
+
 export interface Repository {
   name: string;
   url: string;
@@ -122,26 +123,40 @@ export interface RepositoryResponse {
   };
 }
 
-export interface LoadRepositoriesAction {
-  type: typeof ActionType.LOAD_REPOSITORIES;
+export interface GetRepositoriesAction {
+  type: typeof ActionType.GET_REPOSITORIES;
   payload: {
-    listRepos: Repository[]
+    nameOrganization: string;
+    statusLoading: string;
   };
 }
 
-export interface SetNameAction {
-  type: typeof ActionType.SET_NAME;
+export interface DownloadRepositoriesSuccessAction {
+  type: typeof ActionType.DOWNLOAD_REPOSITORIES_SUCCESS;
   payload: {
-    name: string;
+    repositories: Repository[];
+    pageCount: number;
+    statusLoading: string;
   };
 }
 
-export interface SetRepositoriesLoadingAction {
-  type: typeof ActionType.SET_REPOSITORIES_LOADING;
+export interface DownloadRepositoriesErrorAction {
+  type: typeof ActionType.DOWNLOAD_REPOSITORIES_ERROR;
   payload: {
-    isReposLoading: boolean;
+    repositories: Repository[];
+    statusLoading: string;
+  };
+}
+
+export interface ResetPageCountAction {
+  type: typeof ActionType.RESET_PAGE_COUNT;
+  payload: {
+    pageCount: number;
   };
 }
 
 export type RepositoriesActionTypes =
-   LoadRepositoriesAction | SetNameAction | SetRepositoriesLoadingAction;
+  GetRepositoriesAction |
+  DownloadRepositoriesSuccessAction |
+  DownloadRepositoriesErrorAction |
+  ResetPageCountAction;

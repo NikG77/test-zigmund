@@ -484,10 +484,10 @@ body {
   min-height: 120px;
   margin-right: 20px;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 10px;
 
   border: 1px solid #e5e5e5;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .card:hover,
@@ -528,6 +528,18 @@ body {
   border: 1px solid #e5e5e5;
   border-radius: 15px;
 }
+
 .statistics__item:last-child {
   margin-right: 0;
 }
+
+.answer-error {
+  margin: 0 auto;
+}
+
+.answer-error p {
+  color: red;
+  font-weight: 700;
+  text-align: center;
+}
+

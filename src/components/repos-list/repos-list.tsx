@@ -1,68 +1,92 @@
-import React, { Dispatch } from 'react';
-import { useState, useEffect } from "react";
+import React, { Dispatch, useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { Repository } from "../../types";
 import { ActionCreator } from "../../reduser/reducer";
+import { PageDirection, StatusLoading } from "../../const";
+
 import ReposCard from "../repos-card/repos-card";
 import Loader from "../loader/loader";
 
-interface Props {
-  nameOrganization: string,
-  listRepos: Repository[],
-  isReposLoading: boolean,
-  pageCount: number,
+
+interface ReposListProps {
+  nameOrganization: string;
+  repositories: Repository[];
+  statusLoading: string;
+  pageCount: number;
   onPageChange: (nameOrganization: string, page: number) => void;
+  currentPage: number;
 }
 
-const ReposList: React.FC<Props> = ({nameOrganization, listRepos, isReposLoading, pageCount, onPageChange}: Props) => {
-  const [page, setPage] = useState(1);
+interface ButtonProps {
+  pageDirection: string;
 
-  useEffect(() => {
-    setPage(1);
-  }, [nameOrganization]);
+}
 
-  return (isReposLoading ? <Loader /> :
+
+const ReposList: React.FC<ReposListProps> = ({ nameOrganization, repositories, statusLoading, pageCount, onPageChange, currentPage }: ReposListProps) => {
+
+  const Button: React.FC<ButtonProps> = ({ pageDirection }: ButtonProps) => {
+    let nextPage, isDisabled;
+
+    switch (pageDirection) {
+
+      case PageDirection.PREVIOUS:
+        nextPage = currentPage - 1;
+        isDisabled = currentPage === 1;
+        break;
+
+      case PageDirection.NEXT:
+        nextPage = currentPage + 1;
+        isDisabled = currentPage === pageCount;
+        break;
+      default:
+        return null;
+    }
+
+    return (
+      <button className="btn"
+              onClick={(() => {
+                onPageChange(nameOrganization, nextPage);
+              })}
+              type="button"
+              disabled={isDisabled}
+      >
+        {pageDirection}
+      </button>
+    )
+  }
+
+  const notRepeatAnswer = (
+    <div className="answer-error">
+      <p>
+        Sorry, we cannot re-contact GitHub for the next page. Try again later
+      </p>
+    </div>
+  );
+
+  return (statusLoading === StatusLoading.LOADING ? <Loader /> :
     <React.Fragment>
-      {listRepos.length > 0 && (
+      {repositories.length > 0 && (
         <React.Fragment>
           <div className="repository">
             <div className="repository__title">
               <h2>Вы нашли репозитории по организации {nameOrganization}:</h2>
             </div>
             <div className="repository__list">
-              {listRepos.map((repository: Repository) =>
+              {repositories.map((repository: Repository) =>
                   <ReposCard key={repository.name} repository={repository} />
               )}
             </div>
           </div>
+          {pageCount > 0 && statusLoading === StatusLoading.ERROR && notRepeatAnswer}
 
           <div className="pagination">
             <div className="pagination__page">
-              <span>page {page} from {pageCount}</span>
+              <span>page {currentPage} from {pageCount}</span>
             </div>
             <div className="pagination__btn">
-              <button
-                onClick={(() => {
-                  onPageChange(nameOrganization, page - 1);
-                  setPage(page - 1);
-                })}
-                type="button"
-                className="btn"
-                disabled={page === 1}
-              >
-                Prev
-              </button>
-              <button
-                onClick={(() => {
-                  onPageChange(nameOrganization, page + 1);
-                  setPage( page + 1)
-                })}
-                type="button"
-                className="btn"
-                disabled={page === pageCount}
-              >
-                Next
-              </button>
+              <Button pageDirection={PageDirection.PREVIOUS}/>
+              <Button pageDirection={PageDirection.NEXT}/>
             </div>
           </div>
         </React.Fragment>
@@ -74,14 +98,15 @@ const ReposList: React.FC<Props> = ({nameOrganization, listRepos, isReposLoading
 
 const mapStateToProps = (state) => ({
   nameOrganization: state.nameOrganization,
-  listRepos: state.listRepos,
-  isReposLoading: state.isReposLoading,
+  repositories: state.repositories,
+  statusLoading: state.statusLoading,
   pageCount: state.pageCount,
+  currentPage: state.currentPage,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   onPageChange(name: string, page: number) {
-    dispatch(ActionCreator.setName(name, page));
+    dispatch(ActionCreator.getRepositories(name, page));
   },
 });
 

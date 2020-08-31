@@ -1,4 +1,6 @@
-import {Repository} from "../types";
+import { Repository } from "../types";
+import { getRepositoriesError} from "./selectors";
+import { StatusLoading } from "../const";
 
 export interface DataActionInterface {
   type?: string;
@@ -6,73 +8,83 @@ export interface DataActionInterface {
 }
 
 interface InitialStateInterface {
-  isReposLoading?: boolean,
+  statusLoading?: string,
   nameOrganization?: string,
-  listRepos?: Repository[] | [],
+  repositories?: Repository[] | [],
   pageCount?: number,
+  currentPage?: number,
 }
 
 const initialState: InitialStateInterface = {
-  isReposLoading: false,
+  statusLoading: ``,
   nameOrganization: ``,
-  listRepos: [],
+  repositories: [],
   pageCount: 0,
+  currentPage: 0,
 };
 
 const ActionType = {
-  LOAD_REPOSITORIES:  `LOAD_REPOSITORIES`,
-  SET_NAME: `SET_NAME`,
-  SET_REPOSITORIES_LOADING: `SET_REPOSITORIES_LOADING`,
-  SET_PAGE_COUNT: `SET_PAGE_COUNT`,
+  GET_REPOSITORIES: `GET_REPOSITORIES`,
+  DOWNLOAD_REPOSITORIES_SUCCESS:  `DOWNLOAD_REPOSITORIES_SUCCESS`,
+  DOWNLOAD_REPOSITORIES_ERROR:  `DOWNLOAD_REPOSITORIES_ERROR`,
+  RESET_PAGE_COUNT: `RESET_PAGE_COUNT`,
 };
 
 const ActionCreator = {
 
-  setName: (name: string, page: number = 1) => ({
-    type: ActionType.SET_NAME,
-    payload: {
-      name,
-      page,
-    },
-  }),
+  getRepositories: (name: string, page: number = 1) => {
+    return {
+      type: ActionType.GET_REPOSITORIES,
+      payload: {
+        name,
+        page,
+      },
+    };
+  },
 
-  setRepositoriesLoading: (isReposLoading: boolean) => ({
-    type: ActionType.SET_REPOSITORIES_LOADING,
-    payload: isReposLoading,
-  }),
-
+  resetPageCount: () => {
+    return {
+      type: ActionType.RESET_PAGE_COUNT,
+      payload: 0,
+    };
+  }
 };
 
 const reducer = (state: InitialStateInterface = initialState, action: DataActionInterface) => {
     switch (action.type) {
-    case ActionType.LOAD_REPOSITORIES:
-      return {
-        ...state,
-        listRepos: action.payload as Repository[],
-      };
 
-    case ActionType.SET_NAME:
+    case ActionType.GET_REPOSITORIES:
       return {
         ...state,
         nameOrganization: action.payload.name as string,
+        statusLoading: StatusLoading.LOADING as string,
       };
 
-    case ActionType.SET_REPOSITORIES_LOADING:
+    case ActionType.DOWNLOAD_REPOSITORIES_SUCCESS:
       return {
         ...state,
-        isReposLoading: action.payload as boolean,
+        repositories: action.payload.repositories as Repository[],
+        pageCount: action.payload.pageCount as number || state.pageCount as number,
+        statusLoading: StatusLoading.SUCCESS as string,
+        currentPage:  action.payload.page as number,
       };
 
-    case ActionType.SET_PAGE_COUNT:
+    case ActionType.DOWNLOAD_REPOSITORIES_ERROR:
       return {
         ...state,
-        pageCount: action.payload as number || state.pageCount as number,
+        repositories: getRepositoriesError(state) as Repository[],
+        statusLoading: StatusLoading.ERROR,
+      };
+
+    case ActionType.RESET_PAGE_COUNT:
+      return {
+        ...state,
+        pageCount: 0,
       };
 
     default:
       return state;
   }
-
 };
 
 
