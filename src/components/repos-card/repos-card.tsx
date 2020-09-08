@@ -17,7 +17,6 @@ const ReposCard: React.FC<Props> = ({repository}: Props) => {
 
   const statisticInfo = Object.entries(statistics).map(([name, count]) => {
     return (
-      // <div className={`statistics__item statistics__item-${name}`} key=
       <div className={styles.statistics__item} key={name}>
         <svg viewBox="0 0 17 17" width={17} height={17}>
           <use xlinkHref={`#${name}`}></use>
@@ -40,7 +39,6 @@ const ReposCard: React.FC<Props> = ({repository}: Props) => {
         <div className={styles.statistics}>
           {statisticInfo}
         </div>
-
       </div>
   );
 }
